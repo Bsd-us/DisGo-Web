@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% set page_file = 'user' %}
+{% set title = user.username ~ "'s Profile" %}
+{% block content %}
+    <h1>{{ user.username }}'s Profile</h1>
+    <section id="generalStats">
+        <h2>General Stats</h2>
+        <ul>
+            <li><p>Wallet</p><p>{{ user.wallet }}$</p></li>
+            <li><p>Inventory Value</p><p>{{ user.inventoryValue }}$</p></li>
+            <li><p>Total Spent</p><p>{{ user.totalSpending }}$</p></li>
+        </ul>
+        <hr>
+    </section>
+    <section id="caseStats">
+        <h2>Case Stats</h2>
+        <ul>
+            <li><p>Cases Opened</p><p>{{ user.casesOpened }}</p></li>
+            <li><p>Reds Opened</p><p>{{ user.redsOpened }}</p></li>
+            <li><p>Knives Opened</p><p>{{ user.knivesOpened }}</p></li>
+            <li><p>Case Points</p><p>{{ user.casePoints }}</p></li>
+        </ul>
+        <hr>
+    </section>
+    <section id="inventory">
+        <h2>Inventory</h2>
+        <ul>
+            {% for item in user.inventory %}
+                <li class="rarity{{ item.rarity | capitalize }}">
+                    <img src="{{ item.link }}" alt="{{ item.name }}">
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% set page_file = 'leaderboard' %}
+{% set title = 'Leaderboard' %}
+{% block content %}
+    <section id="leaderboard">
+        <table>
+            <caption>Leaderboard of the {{ bestUsers | length }} best users</caption>
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Username</th>
+                    <th>Inventory Value</th>
+                    <th>Inventory Size</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in bestUsers %}
+                    <tr data-url="/user?ID={{ user.userID }}">
+                        <td>{{ loop.index }}</td>
+                        <td>{% if user.premium == 'activated' %}★{% endif %}{{ user.username }}</td>
+                        <td>${{ user.inventoryValue }}</td>
+                        <td>{{ user.inventorySize }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

@@ -1,0 +1,29 @@
+main {
+    background-color: var(--darker-blue);
+    color: var(--white-shade);
+}
+
+#leaderboard caption {
+    line-height: 3em;
+}
+
+#leaderboard table {
+    width: 100%;
+}
+
+#leaderboard th {
+    text-align: left;
+}
+
+#leaderboard tr {
+    cursor: pointer;
+    line-height: 2em;
+}
+
+#leaderboard tr:nth-child(even), #leaderboard th {
+    background-color: var(--dark-blue);
+}
+
+#leaderboard tr:hover {
+    background-color: var(--light-blue);
+}

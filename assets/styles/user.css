@@ -1,0 +1,68 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 3em;
+    background-color: var(--darker-blue);
+    color: var(--white-shade);
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1em;
+    text-align: center;
+}
+
+section hr {
+    width: 100%;
+    color: var(--white-shade);
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+#generalStats ul,
+#caseStats ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 5em;
+}
+
+#generalStats p:first-of-type,
+#caseStats p:first-of-type {
+    color: var(--grey-shade);
+    font-weight: bold;
+    line-height: 1.5em;
+}
+
+#generalStats p:last-of-type,
+#caseStats p:last-of-type {
+    font-size: 0.75em;
+}
+
+#inventory ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+#inventory li {
+    height: 11em;
+    width: 11em;
+}
+
+#inventory img {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+rmdir public
+git clone https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO} .
+cat <<EOF > .env
+DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
+MONGODB_URL=${MONGODB_URL}
+MONGODB_NAME=${MONGODB_NAME}
+DISCORD_API_ENDPOINT=${DISCORD_API_ENDPOINT}
+DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
+EOF
+composer require doctrine/mongodb-odm-bundle symfony/requirements-checker
+composer install --no-dev --optimize-autoloader
+php bin/console cache:clear
+php bin/console asset-map:compile

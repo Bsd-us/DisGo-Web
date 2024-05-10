@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - DisGo</title>
+    <link rel="stylesheet" href="{{ asset('styles/reset.css')}}">
+    <link rel="stylesheet" href="{{ asset('styles/common.css')}}">
+    <link rel="stylesheet" href="{{ asset('styles/' ~ page_file ~ '.css') }}">
+    <script src="{{ asset('scripts/'  ~ page_file ~ '.js') }}"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="{{ asset('images/logo.png') }}" />
+            <ul>
+                <li class="active">Home</li>
+                <li>Features</li>
+                <li>Commands</li>
+                <li>Team</li>
+                <li>Stats</li>
+                <li>Video Demo</li>
+                <li>Testimonials</li>
+            </ul>
+        </div>
+    </header>
+    <main>

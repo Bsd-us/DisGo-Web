@@ -7,41 +7,12 @@
     --white-shade: #ecf0f1;
     --grey-shade: #aaa;
 
-    --rarity-yellow: #ffff01;
-    --rarity-red: #ff0400;
-    --rarity-pink: #ff00Ec;
-    --rarity-purple: #8300FF;
-    --rarity-blue: #005DFF;
-}
-
-.rarityYellow {
-    box-shadow:
-        0 0 17px 3px var(--rarity-yellow),
-        0 0 4px 2px var(--rarity-yellow);
-}
-
-.rarityRed {
-    box-shadow:
-        0 0 17px 3px var(--rarity-red),
-        0 0 4px 2px var(--rarity-red);
-}
-
-.rarityPink {
-    box-shadow:
-        0 0 17px 3px var(--rarity-pink),
-        0 0 4px 2px var(--rarity-pink);
-}
-
-.rarityPurple {
-    box-shadow:
-        0 0 17px 3px var(--rarity-purple),
-        0 0 4px 2px var(--rarity-purple);
-}
-
-.rarityBlue {
-    box-shadow:
-        0 0 17px 3px var(--rarity-blue),
-        0 0 4px 2px var(--rarity-blue);
+    /* --rarity-yellow: #ebf55c; */
+    --rarity-yellow: #653232;
+    --rarity-red: #653232;
+    --rarity-pink: #6c297f;
+    --rarity-purple: #50248e;
+    --rarity-blue: #414e9c;
 }
 
 body {
@@ -49,6 +20,7 @@ body {
 }
 
 header {
+    z-index: 2;
     position: sticky;
     display: flex;
     flex-direction: row;
@@ -84,7 +56,7 @@ header li {
 }
 
 main {
-    padding: 2em;
+    padding: 1em 2em;
 }
 
 footer {

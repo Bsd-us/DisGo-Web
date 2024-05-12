@@ -12,6 +12,9 @@
         #[MongoDB\Field(type: 'collection')]
         protected array $inventory;
 
+        #[MongoDB\Field(type: 'collection')]
+        protected array $itemInventory;
+
         #[MongoDB\Field(type: 'string')]
         protected string $userID;
 
@@ -37,10 +40,10 @@
         protected float $totalSpending;
 
         #[MongoDB\Field(type: 'int')]
-        protected int $redsOpened;
+        protected ?int $redsOpened = null;
 
         #[MongoDB\Field(type: 'int')]
-        protected int $knivesOpened;
+        protected ?int $knivesOpened = null;
 
         #[MongoDB\Field(type: 'int')]
         protected int $casePoints;
@@ -48,18 +51,43 @@
         #[MongoDB\Field(type: 'string')]
         protected ?string $premium = null;
 
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $opTickets = null;
+
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $operationTokens = null;
+
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $compOp = null;
+
+        #[MongoDB\Field(type: 'string')]
+        protected ?string $banType = null;
+
+        #[MongoDB\Field(type: 'int')]
+        protected int $dailyStreak;
+
+        #[MongoDB\Field(type: 'string')]
+        protected string $hourlyClaim;
+
+        public function getBanType(): ?string { return $this->banType; }
+        public function getCasePoints(): int { return $this->casePoints; }
+        public function getCasesOpened(): int { return $this->casesOpened; }
+        public function getCompOp(): ?int { return $this->compOp; }
+        public function getDailyClaim(): string { return $this->dailyClaim; }
+        public function getDailyStreak(): int { return $this->dailyStreak; }
+        public function getHourlyClaim(): string { return $this->hourlyClaim; }
         public function getId(): string { return $this->id; }
         public function getInventory(): array { return $this->inventory; }
+        public function getInventorySize(): int { return $this->inventorySize; }
+        public function getInventoryValue(): float { return $this->inventoryValue; }
+        public function getItemInventory(): array { return $this->itemInventory; }
+        public function getKnivesOpened(): ?int { return $this->knivesOpened; }
+        public function getOperationTokens(): ?int { return $this->operationTokens; }
+        public function getOpTickets(): ?int { return $this->opTickets; }
+        public function getPremium(): ?string { return $this->premium; }
+        public function getRedsOpened(): ?int { return $this->redsOpened; }
+        public function getTotalSpending(): float { return $this->totalSpending; }
         public function getUsername(): string { return $this->username; }
         public function getUserID(): string { return $this->userID; }
         public function getWallet(): float { return $this->wallet; }
-        public function getInventoryValue(): float { return $this->inventoryValue; }
-        public function getInventorySize(): int { return $this->inventorySize; }
-        public function getDailyClaim(): string { return $this->dailyClaim; }
-        public function getCasesOpened(): int { return $this->casesOpened; }
-        public function getTotalSpending(): float { return $this->totalSpending; }
-        public function getRedsOpened(): int { return $this->redsOpened; }
-        public function getKnivesOpened(): int { return $this->knivesOpened; }
-        public function getCasePoints(): int { return $this->casePoints; }
-        public function getPremium(): ?string { return $this->premium; }
     }

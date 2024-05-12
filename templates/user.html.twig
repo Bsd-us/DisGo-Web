@@ -2,34 +2,133 @@
 {% set page_file = 'user' %}
 {% set title = user.username ~ "'s Profile" %}
 {% block content %}
-    <h1>{{ user.username }}'s Profile</h1>
-    <section id="generalStats">
-        <h2>General Stats</h2>
-        <ul>
-            <li><p>Wallet</p><p>{{ user.wallet }}$</p></li>
-            <li><p>Inventory Value</p><p>{{ user.inventoryValue }}$</p></li>
-            <li><p>Total Spent</p><p>{{ user.totalSpending }}$</p></li>
-        </ul>
-        <hr>
-    </section>
-    <section id="caseStats">
-        <h2>Case Stats</h2>
-        <ul>
-            <li><p>Cases Opened</p><p>{{ user.casesOpened }}</p></li>
-            <li><p>Reds Opened</p><p>{{ user.redsOpened }}</p></li>
-            <li><p>Knives Opened</p><p>{{ user.knivesOpened }}</p></li>
-            <li><p>Case Points</p><p>{{ user.casePoints }}</p></li>
-        </ul>
-        <hr>
-    </section>
-    <section id="inventory">
-        <h2>Inventory</h2>
-        <ul>
-            {% for item in user.inventory %}
-                <li class="rarity{{ item.rarity | capitalize }}">
-                    <img src="{{ item.link }}" alt="{{ item.name }}">
-                </li>
-            {% endfor %}
-        </ul>
+    <section id="user">
+        <aside>
+            <article>
+                <h1><span>{{ user.username }}</span>'s profile</h1>
+                <div id="stats">
+                    <div>
+                        <div>
+                            <h3>Balance</h3>
+                            ${{ user.wallet|number_format(2, '.', ',') }}
+                        </div>
+                        <div>
+                            <h3>Account</h3>
+                            {% if user.banType != null %}
+                                Banned
+                            {% elseif user.premium == "activated" %}
+                                Premium
+                            {% else %}
+                                Active
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h3>Case points</h3>
+                            {{ user.casePoints|number_format(0, '.', ',') }}
+                        </div>
+                        <div>
+                            <h3>Spent</h3>
+                            ${{ user.totalSpending|number_format(0, '.', ',') }}
+                        </div>
+                        <div>
+                            <h3>Opened</h3>
+                            {{ user.casesOpened|number_format(0, '.', ',')}}
+                        </div>
+                        <div>
+                            <h3>Reds</h3>
+                            {{ user.redsOpened|number_format(0, '.', ',') }}
+                        </div>
+                        <div>
+                            <h3>Knives</h3>
+                            {{ user.knivesOpened }}
+                        </div>
+                    </div>
+                    <div>
+                        <h2>Operation</h2>
+                        <div>
+                            <h3>Tokens</h3>
+                            {{ user.operationTokens }}
+                        </div>
+                        <div>
+                            <h3>Tickets</h3>
+                            {{ user.opTickets }}
+                        </div>
+                        <div>
+                            <h3>Completed</h3>
+                            {{ user.compOp }}
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {#
+                    <tr>
+                        <td>
+                            <h4>Last daily</h4>
+                            {{ user.dailyClaim }}
+                        </td>
+                        <td>
+                            <h4>Daily streak</h4>
+                            {{ user.dailyStreak }}
+                        </td>
+                    </tr>
+            #}
+        </aside>
+        <div id="inventory">
+            <nav>
+                <ul>
+                    <li><a href="/user/{{ id }}/skins">Skins</a></li>
+                    <li><a href="/user/{{ id }}/stickers">Stickers</a></li>
+                    <li><a href="">Filter:</a></li>
+                </ul>
+                {% if inventoryType == 'skins' %}
+                    <p>${{ user.inventoryValue|number_format(2, '.', ',') }} - {{ user.inventory|length }}/{{ user.inventorySize }} items</p>
+                {% else %}
+                    <p>$ - {{ user.itemInventory|length }}/25 items</p>
+                {% endif %}
+            </nav>
+            <ul>
+                {% if inventoryType == 'skins' %}
+                    {% for item in user.inventory %}
+                        <li class="rarity{{ item.rarity | capitalize }}">
+                            <div class="retractedDiv rarity{{ item.rarity | capitalize }}">
+                                <figure>
+                                    <figcaption>
+                                        <p>Id°{{ loop.index }}</p>
+                                        <p>{{ item.float }}</p>
+                                        <p>{{ item.case }}</p>
+                                        <p>${{ item.price|number_format(2, '.', ',') }}</p>
+                                    </figcaption>
+                                    <img src="{{ item.link }}" alt="{{ item.name }}">
+                                </figure>
+                                <figcaption>
+                                    <h3>{{ item.name }}</h3>
+                                    <p>{{ item.owner is defined ? item.owner }}</p>
+                                </figcaption>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    {% for item in user.itemInventory %}
+                    <li class="rarity{{ item.rarity | capitalize }} sticker">
+                        <div class="retractedDiv rarity{{ item.rarity | capitalize }}">
+                            <figure>
+                                <figcaption>
+                                    <p>Id°{{ loop.index }}</p>
+                                    <p>{{ item.capsule }}</p>
+                                    <p>${{ item.price|number_format(2, '.', ',') }}</p>
+                                    <p>{{ item.finish }}</p>
+                                </figcaption>
+                                <img src="{{ item.link }}" alt="{{ item.name }}">
+                            </figure>
+                            <figcaption>
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.owner is defined ? item.owner }}</p>
+                            </figcaption>
+                        </div>
+                    </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
     </section>
 {% endblock %}

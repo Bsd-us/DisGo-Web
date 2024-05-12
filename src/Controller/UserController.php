@@ -9,18 +9,25 @@
 
     class UserController extends AbstractController
     {
-        #[Route('/user')]
-        public function user(DocumentManager $dm): Response
+        #[Route('/user/{id}')]
+        #[Route('/user/{id}/{inventoryType?}', requirements: ['inventoryType' => 'skins|stickers'])]
+        public function user(DocumentManager $dm, $id, $inventoryType = null): Response
         {
             $users = $dm->getRepository(User::class);
-            if (isset($_GET['ID'])) {
-                $user = $users->findOneBy(['userID' => $_GET['ID']]);
-            } elseif (isset($_GET['name'])) {
-                $user = $users->findOneBy(['username' => $_GET['name']]);
+
+            $user = $users->findOneBy(['userID' => $id]);
+            if (!$user) {
+                $user = $users->findOneBy(['username' => $id]);
+            }
+
+            if (!$inventoryType) {
+                $inventoryType = 'skins';
             }
 
             return $this->render('user.html.twig', [
                 'user' => $user,
+                'id' => $id,
+                'inventoryType' => $inventoryType,
             ]);
         }
     }

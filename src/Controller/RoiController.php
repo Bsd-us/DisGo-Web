@@ -8,9 +8,14 @@
 
     class RoiController extends AbstractController
     {
+        public function __construct(
+            private DocumentManager $dm,
+            private Roi $roi,
+        ) {}
+
         #[Route('/roi')]
-        public function test(DocumentManager $dm, ROI $roi): void
+        public function test(): void
         {
-            dd($roi->calculate($dm, "winter2013"));
+            dd($this->roi->calculate($this->dm, "winter2013"));
         }
     }

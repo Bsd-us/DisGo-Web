@@ -90,17 +90,37 @@ main {
 }
 
 #inventory nav li {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25em;
     padding: 0.5em 1em;
     border-radius: 5px;
     background-color: var(--dark-blue);
 }
 
-#inventory nav li:last-of-type {
-    background-color: transparent;
-}
-
 #inventory nav p {
     font-size: 0.8em;
+}
+
+#inventory nav button {
+    padding: 0;
+    background-color: transparent;
+    color: var(--white-shade);
+    font-size: 1em;
+    border: none;
+}
+
+#inventory nav select {
+    height: 100%;
+    padding: 0 0;
+    background-color: transparent;
+    color: var(--white-shade);
+    font-size: 1em;
+    border: none;
+}
+
+#inventory nav select:hover {
+    cursor: pointer;
 }
 
 #inventory > ul {

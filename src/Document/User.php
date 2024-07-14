@@ -6,14 +6,56 @@
     #[MongoDB\Document(collection: 'users')]
     class User
     {
+        #[MongoDB\Field(type: 'int')]
+        protected int $casePoints;
+
+        #[MongoDB\Field(type: 'int')]
+        protected int $casesOpened;
+
+        #[MongoDB\Field(type: 'string')]
+        protected ?string $banType = null;
+
+        #[MongoDB\Field(type: 'string')]
+        protected string $dailyClaim;
+
+        #[MongoDB\Field(type: 'int')]
+        protected int $dailyStreak;
+
+        #[MongoDB\Field(type: 'string')]
+        protected string $hourlyClaim;
+
         #[MongoDB\Id]
         protected string $id;
 
         #[MongoDB\Field(type: 'collection')]
         protected array $inventory;
 
+        #[MongoDB\Field(type: 'int')]
+        protected int $inventorySize;
+
+        #[MongoDB\Field(type: 'float')]
+        protected float $inventoryValue;
+
         #[MongoDB\Field(type: 'collection')]
         protected array $itemInventory;
+
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $knivesOpened = null;
+
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $opTickets = null;
+
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $operationTokens = null;
+
+        #[MongoDB\Field(type: 'string')]
+        protected ?string $premium = null;
+
+        #[MongoDB\Field(type: 'int')]
+        protected ?int $redsOpened = null;
+
+        #[MongoDB\Field(type: 'float')]
+        protected float $totalSpending;
 
         #[MongoDB\Field(type: 'string')]
         protected string $userID;
@@ -24,50 +66,8 @@
         #[MongoDB\Field(type: 'float')]
         protected float $wallet;
 
-        #[MongoDB\Field(type: 'float')]
-        protected float $inventoryValue;
-
-        #[MongoDB\Field(type: 'int')]
-        protected int $inventorySize;
-
-        #[MongoDB\Field(type: 'string')]
-        protected string $dailyClaim;
-
-        #[MongoDB\Field(type: 'int')]
-        protected int $casesOpened;
-
-        #[MongoDB\Field(type: 'float')]
-        protected float $totalSpending;
-
-        #[MongoDB\Field(type: 'int')]
-        protected ?int $redsOpened = null;
-
-        #[MongoDB\Field(type: 'int')]
-        protected ?int $knivesOpened = null;
-
-        #[MongoDB\Field(type: 'int')]
-        protected int $casePoints;
-
-        #[MongoDB\Field(type: 'string')]
-        protected ?string $premium = null;
-
-        #[MongoDB\Field(type: 'int')]
-        protected ?int $opTickets = null;
-
-        #[MongoDB\Field(type: 'int')]
-        protected ?int $operationTokens = null;
-
         #[MongoDB\Field(type: 'int')]
         protected ?int $compOp = null;
-
-        #[MongoDB\Field(type: 'string')]
-        protected ?string $banType = null;
-
-        #[MongoDB\Field(type: 'int')]
-        protected int $dailyStreak;
-
-        #[MongoDB\Field(type: 'string')]
-        protected string $hourlyClaim;
 
         public function getBanType(): ?string { return $this->banType; }
         public function getCasePoints(): int { return $this->casePoints; }

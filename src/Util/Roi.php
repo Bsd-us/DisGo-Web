@@ -23,14 +23,18 @@
             'blue' => 0.799,
         ];
 
-        public function calculate(DocumentManager $dm, string $container): float
+        public function __construct(
+            private DocumentManager $dm,
+        ) {}
+
+        public function calculate(string $container): float
         {
-            $containers = $dm->getRepository(Container::class);
+            $containers = $this->dm->getRepository(Container::class);
             $container = $containers->findOneBy(['command' => $container]);
             $containerItems = $container->getItems();
 
             $perRarityItems = [];
-            $items = $dm->getRepository(Item::class);
+            $items = $this->dm->getRepository(Item::class);
             foreach ($containerItems as $containerItem) {
                 $item = $items->findOneBy(['name' => $containerItem["name"]]);
                 $perRarityItems[$containerItem["rarity"]][] = $this->calculateAveragePrice($item);

@@ -4,6 +4,7 @@
     use App\Util\Roi;
     use App\Document\Container;
     use App\Document\Item;
+    use App\Service\ContainerService;
     use Doctrine\ODM\MongoDB\DocumentManager;
 
     class WeaponMission
@@ -16,9 +17,14 @@
             'blue' => 0.799,
         ];
 
-        public function getBestCasesForWeapon(DocumentManager $dm, string $weapon): array
+        public function __construct(
+            private DocumentManager $dm,
+            private Roi $roi,
+        ) {}
+
+        public function getBestCasesForWeapon(string $weapon): array
         {
-            $containers = $dm->getRepository(Container::class)->findBy([
+            $containers = $this->dm->getRepository(Container::class)->findBy([
                 'active' => true,
                 'type' => 'case',
                 'currType' => 'money',
@@ -48,10 +54,10 @@
             return $bestCases;
         }
 
-        public function getBestCasesFor2Weapons(DocumentManager $dm, string $weapon1, string $weapon2): array
+        public function getBestCasesFor2Weapons(string $weapon1, string $weapon2): array
         {
-            $res1 = $this->getBestCasesForWeapon($dm, $weapon1);
-            $res2 = $this->getBestCasesForWeapon($dm, $weapon2);
+            $res1 = $this->getBestCasesForWeapon($this->dm, $weapon1);
+            $res2 = $this->getBestCasesForWeapon($this->dm, $weapon2);
 
             $bestCases = [];
             foreach ($res1 as $row1) {
@@ -70,9 +76,9 @@
             return $bestCases;
         }
 
-        public function getBestCaseAndCostsForWeapon(DocumentManager $dm, ROI $roi, string $weapon, int $nbWeapon): array
+        public function getBestCaseAndCostsForWeapon(string $weapon, int $nbWeapon): array
         {
-            $res = $this->getBestCasesForWeapon($dm, $weapon);
+            $res = $this->getBestCasesForWeapon($this->dm, $weapon);
             $minPriceChances = $res[0]["priceChances"];
             $res = array_filter($res, fn($row) => $row["priceChances"] === $minPriceChances);
 
@@ -81,7 +87,7 @@
             } else {
                 $bestRoi = 0;
                 foreach ($res as $row) {
-                    $roiValue = $roi->calculate($dm, $row["caseName"]);
+                    $roiValue = $this->roi->calculate($this->dm, $row["caseName"]);
                     if ($roiValue > $bestRoi) {
                         $bestRoi = $roiValue;
                         $res = $row;
@@ -89,22 +95,22 @@
                 }
             }
 
-            $concernedCase = $dm->getRepository(Container::class)->findOneBy(['command' => $res["caseName"]]);
+            $concernedCase = $this->dm->getRepository(Container::class)->findOneBy(['command' => $res["caseName"]]);
             $nbCases = $nbWeapon / $res["chances"];
             $baseCost = $nbCases * $concernedCase->getPrice();
-            $roi = $roi->calculate($dm, $res["caseName"]);
+            $roiValue = $this->roi->calculate($this->dm, $res["caseName"]);
 
             return [
                 'caseName' => $res["caseName"],
                 'nbCases' => $nbCases,
-                'cost' => $baseCost * (1 - $roi),
+                'cost' => $baseCost * (1 - $roiValue),
             ];
         }
 
-        public function getCostForCase(DocumentManager $dm, ROI $roi, string $case, int $nbCases): float
+        public function getCostForCase(string $case, int $nbCases): float
         {
-            $concernedCase = $dm->getRepository(Container::class)->findOneBy(['command' => $case]);
-            $roi = $roi->calculate($dm, $case);
-            return $concernedCase->getPrice() * $nbCases * (1 - $roi);
+            $concernedCase = $this->dm->getRepository(Container::class)->findOneBy(['command' => $case]);
+            $roiValue = $this->roi->calculate($this->dm, $case);
+            return $concernedCase->getPrice() * $nbCases * (1 - $roiValue);
         }
     }

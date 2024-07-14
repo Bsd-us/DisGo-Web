@@ -78,7 +78,18 @@
                 <ul>
                     <li><a href="/user/{{ id }}/skins">Skins</a></li>
                     <li><a href="/user/{{ id }}/stickers">Stickers</a></li>
-                    <li><a href="">Filter:</a></li>
+                    <li>
+                        <button onclick="">Filter by</button>
+                        <select name="sort" onchange="updateSort(this.value);">
+                            <option value="default" {% if sort == 'default' %}selected{% endif %}>default</option>
+                            <option value="price" {% if sort == 'price' %}selected{% endif %}>price</option>
+                            <option value="rarity" {% if sort == 'rarity' %}selected{% endif %}>rarity</option>
+                            {% if inventoryType == 'skins' %}
+                                <option value="float" {% if sort == 'float' %}selected{% endif %}>float</option>
+                            {% endif %}
+                        </select>
+                        </select>
+                    </li>
                 </ul>
                 {% if inventoryType == 'skins' %}
                     <p>${{ user.inventoryValue|number_format(2, '.', ',') }} - {{ user.inventory|length }}/{{ user.inventorySize }} items</p>
@@ -87,36 +98,23 @@
                 {% endif %}
             </nav>
             <ul>
-                {% if inventoryType == 'skins' %}
-                    {% for item in user.inventory %}
-                        <li class="rarity{{ item.rarity | capitalize }}">
-                            <div class="retractedDiv rarity{{ item.rarity | capitalize }}">
-                                <figure>
-                                    <figcaption>
+                {% for item in inventory %}
+                    <li class="rarity{{ item.rarity | capitalize }}">
+                        <div class="retractedDiv rarity{{ item.rarity | capitalize }}">
+                            <figure>
+                                <figcaption>
+                                    {% if inventoryType == 'skins' %}
                                         <p>Id°{{ loop.index }}</p>
                                         <p>{{ item.float }}</p>
                                         <p>{{ item.case }}</p>
                                         <p>${{ item.price|number_format(2, '.', ',') }}</p>
-                                    </figcaption>
-                                    <img src="{{ item.link }}" alt="{{ item.name }}">
-                                </figure>
-                                <figcaption>
-                                    <h3>{{ item.name }}</h3>
-                                    <p>{{ item.owner is defined ? item.owner }}</p>
-                                </figcaption>
-                            </div>
-                        </li>
-                    {% endfor %}
-                {% else %}
-                    {% for item in user.itemInventory %}
-                    <li class="rarity{{ item.rarity | capitalize }} sticker">
-                        <div class="retractedDiv rarity{{ item.rarity | capitalize }}">
-                            <figure>
-                                <figcaption>
-                                    <p>Id°{{ loop.index }}</p>
-                                    <p>{{ item.capsule }}</p>
-                                    <p>${{ item.price|number_format(2, '.', ',') }}</p>
-                                    <p>{{ item.finish }}</p>
+                                        <p>{{ item.rarity }}</p>
+                                    {% else %}
+                                        <p>Id°{{ loop.index }}</p>
+                                        <p>{{ item.capsule }}</p>
+                                        <p>${{ item.price|number_format(2, '.', ',') }}</p>
+                                        <p>{{ item.finish }}</p>
+                                    {% endif %}
                                 </figcaption>
                                 <img src="{{ item.link }}" alt="{{ item.name }}">
                             </figure>
@@ -126,8 +124,7 @@
                             </figcaption>
                         </div>
                     </li>
-                    {% endfor %}
-                {% endif %}
+                {% endfor %}
             </ul>
         </div>
     </section>

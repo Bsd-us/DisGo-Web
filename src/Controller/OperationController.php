@@ -10,18 +10,24 @@
 
     class OperationController extends AbstractController
     {
+        public function __construct(
+            private DocumentManager $dm,
+            private Roi $roi,
+            private WeaponMission $wm,
+        ) {}
+
         #[Route('/operation')]
-        public function test(DocumentManager $dm, WeaponMission $wm, Roi $roi): void
+        public function test(): void
         {
             //$this->testBestCasesForWeapon($dm, $wm, 'SG');
             //$this->testBestCasesFor2Weapons($dm, $wm, 'MP9', 'R8');
             //dd($wm->getBestCaseAndCostsForWeapon($dm, $roi, 'AK', 46));
-            dd($wm->getCostForCase($dm, $roi, 'glove', 254));
+            dd($this->wm->getCostForCase($this->dm, $this->roi, 'glove', 254));
         }
 
-        private function testBestCasesForWeapon(DocumentManager $dm, WeaponMission $wm, string $weapon): void
+        private function testBestCasesForWeapon(string $weapon): void
         {
-            $bestCases = $wm->getBestCasesForWeapon($dm, $weapon);
+            $bestCases = $this->wm->getBestCasesForWeapon($this->dm, $weapon);
             echo '<pre>';
             foreach ($bestCases as $row) {
                 echo str_pad($row["caseName"], 15);
@@ -32,9 +38,9 @@
             echo '</pre>';
         }
 
-        private function testBestCasesFor2Weapons(DocumentManager $dm, WeaponMission $wm, string $weapon1, string $weapon2): void
+        private function testBestCasesFor2Weapons(string $weapon1, string $weapon2): void
         {
-            $bestCases = $wm->getBestCasesFor2Weapons($dm, $weapon1, $weapon2);
+            $bestCases = $this->wm->getBestCasesFor2Weapons($this->dm, $weapon1, $weapon2);
             echo '<pre>';
             foreach ($bestCases as $row) {
                 echo str_pad($row["caseName"], 15);

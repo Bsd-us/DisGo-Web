@@ -16,7 +16,7 @@
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: sans-serif;
 }
 
 header {
@@ -30,7 +30,7 @@ header {
     top: 0;
     background-color: var(--darker-blue);
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-family: sans-serif;
 }
 
 header div {

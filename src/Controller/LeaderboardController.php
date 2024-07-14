@@ -14,10 +14,14 @@
             'ItsSeb',
         ];
 
+        public function __construct(
+            private DocumentManager $dm,
+        ) {}
+
         #[Route('/leaderboard')]
-        public function user(DocumentManager $dm): Response
+        public function leaderboard(): Response
         {
-            $qb = $dm->createQueryBuilder(User::class);
+            $qb = $this->dm->createQueryBuilder(User::class);
             $qb->field('username')->notIn(self::EXCLUDED_USERS);
             $qb->field('banType')->exists(false);
             $qb->sort('inventoryValue', 'DESC');

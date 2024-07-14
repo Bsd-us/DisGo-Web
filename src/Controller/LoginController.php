@@ -23,7 +23,7 @@
                 $content = $this->exchangeAuthCode($currentUrl, $_GET["code"]);
                 $userInfo = $this->getUserInfo($content["access_token"]);
                 $userID = $userInfo["id"];
-                return $this->redirect('/user?ID=' . $userID);
+                return $this->redirect('/user/' . $userID);
             }
         }
 

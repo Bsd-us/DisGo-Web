@@ -3,7 +3,8 @@
 
     use App\Document\User;
 
-    class InventoryService {
+    class InventoryService
+    {
         public function getSortedInventory($array, $sortBy, $order): array {
             usort($array, function($a, $b) use ($sortBy, $order) {
                 if ($order === 'asc') {

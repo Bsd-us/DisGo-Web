@@ -1,8 +1,8 @@
 <?php
     namespace App\Controller;
 
-    use App\Util\Roi;
-    use App\Util\WeaponMission;
+    use App\Service\ContainerService;
+    use App\Service\RoiService;
     use Doctrine\ODM\MongoDB\DocumentManager;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Response;
@@ -11,23 +11,23 @@
     class OperationController extends AbstractController
     {
         public function __construct(
+            private ContainerService $cs,
             private DocumentManager $dm,
-            private Roi $roi,
-            private WeaponMission $wm,
+            private RoiService $roi,
         ) {}
 
         #[Route('/operation')]
         public function test(): void
         {
-            //$this->testBestCasesForWeapon($dm, $wm, 'SG');
-            //$this->testBestCasesFor2Weapons($dm, $wm, 'MP9', 'R8');
-            //dd($wm->getBestCaseAndCostsForWeapon($dm, $roi, 'AK', 46));
-            dd($this->wm->getCostForCase($this->dm, $this->roi, 'glove', 254));
+            //$this->testBestCasesForWeapon('SG');
+            //$this->testBestCasesFor2Weapons('MP9', 'R8');
+            //dd($this->cs->getBestCaseAndCostsForWeapon('AK', 46));
+            dd($this->cs->getCostForCase('glove', 254));
         }
 
         private function testBestCasesForWeapon(string $weapon): void
         {
-            $bestCases = $this->wm->getBestCasesForWeapon($this->dm, $weapon);
+            $bestCases = $this->cs->getBestCasesForWeapon($weapon);
             echo '<pre>';
             foreach ($bestCases as $row) {
                 echo str_pad($row["caseName"], 15);
@@ -40,7 +40,7 @@
 
         private function testBestCasesFor2Weapons(string $weapon1, string $weapon2): void
         {
-            $bestCases = $this->wm->getBestCasesFor2Weapons($this->dm, $weapon1, $weapon2);
+            $bestCases = $this->cs->getBestCasesFor2Weapons($weapon1, $weapon2);
             echo '<pre>';
             foreach ($bestCases as $row) {
                 echo str_pad($row["caseName"], 15);

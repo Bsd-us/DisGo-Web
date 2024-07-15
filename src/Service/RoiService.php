@@ -1,11 +1,11 @@
 <?php
-    namespace App\Util;
+    namespace App\Service;
 
     use App\Document\Container;
     use App\Document\Item;
     use Doctrine\ODM\MongoDB\DocumentManager;
 
-    class Roi
+    class RoiService
     {
         private const WEAR_BOUNDS = [
             'Factory New' => [0, 0.07],

@@ -80,13 +80,21 @@
                     <li><a href="/user/{{ id }}/stickers">Stickers</a></li>
                     <li>
                         <button onclick="">Filter by</button>
-                        <select name="sort" onchange="updateSort(this.value);">
+                        <select name="sort" onchange="updateFilter('sort', this.value);">
                             <option value="default" {% if sort == 'default' %}selected{% endif %}>default</option>
                             <option value="price" {% if sort == 'price' %}selected{% endif %}>price</option>
                             <option value="rarity" {% if sort == 'rarity' %}selected{% endif %}>rarity</option>
                             {% if inventoryType == 'skins' %}
                                 <option value="float" {% if sort == 'float' %}selected{% endif %}>float</option>
                             {% endif %}
+                        </select>
+                        </select>
+                    </li>
+                    <li>
+                        <button onclick="">Order by</button>
+                        <select name="sort" onchange="updateFilter('order', this.value);">
+                            <option value="asc" {% if order == 'asc' %}selected{% endif %}>ascending</option>
+                            <option value="desc" {% if order == 'desc' %}selected{% endif %}>descending</option>
                         </select>
                         </select>
                     </li>

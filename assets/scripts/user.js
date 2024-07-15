@@ -1,9 +1,9 @@
-function updateSort(sortValue) {
+function updateFilter(field, value) {
     const url = new URL(window.location.href);
-    if (sortValue === 'default') {
-        url.searchParams.delete('sort');
+    if (value == 'default') {
+        url.searchParams.delete(field);
     } else {
-        url.searchParams.set('sort', sortValue);
+        url.searchParams.set(field, value);
     }
     window.location.href = url.toString();
 }

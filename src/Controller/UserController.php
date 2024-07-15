@@ -4,7 +4,7 @@
     use App\Document\Mission;
     use App\Document\User;
     use App\Document\Watcher;
-    use App\Service\InventoryService;
+    use App\Service\UserService;
     use Doctrine\ODM\MongoDB\DocumentManager;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@
 
         public function __construct(
             private DocumentManager $dm,
-            private InventoryService $is,
+            private UserService $us,
         ) {}
 
         #[Route('/user/{id}')]
@@ -27,10 +27,10 @@
         {
             if (!empty($_GET)) {
                 $validSorts = $inventoryType === 'skins' ? self::VALID_SKINS_SORTS : self::VALID_STICKERS_SORTS;
-                if (isset($_GET['sort']) && !in_array($_GET['sort'], $validSorts, true)) {
+                if (isset($_GET["sort"]) && !in_array($_GET["sort"], $validSorts, true)) {
                     throw new \Exception('Invalid sort');
                 }
-                if (isset($_GET['order']) && !in_array($_GET['order'], self::VALID_ORDERS, true)) {
+                if (isset($_GET["order"]) && !in_array($_GET["order"], self::VALID_ORDERS, true)) {
                     throw new \Exception('Invalid order');
                 }
             }
@@ -48,10 +48,12 @@
             if ($inventoryType === 'stickers') {
                 $inventory = $user->getItemInventory();
             }
-            if (isset($_GET['sort'])) {
-                $inventory = $this->is->getSortedInventory(
-                    $inventory, $_GET['sort'], $_GET['order'] ?? 'asc'
+            if (isset($_GET["sort"])) {
+                $inventory = $this->us->getSortedInventory(
+                    $inventory, $_GET["sort"], $_GET["order"] ?? 'asc'
                 );
+            } else if (isset($_GET["order"]) && $_GET["order"] === 'desc') {
+                $inventory = array_reverse($inventory);
             }
 
             // $missions = $dm->getRepository(Mission::class);
@@ -65,7 +67,8 @@
                 'id' => $id,
                 'inventory' => $inventory,
                 'inventoryType' => $inventoryType,
-                'sort' => $_GET['sort'] ?? 'default',
+                'order' => $_GET["order"] ?? 'default',
+                'sort' => $_GET["sort"] ?? 'default',
                 'user' => $user,
             ]);
         }

@@ -1,9 +1,6 @@
 <?php
     namespace App\Controller;
 
-    use App\Document\Mission;
-    use App\Document\User;
-    use App\Document\Watcher;
     use App\Service\UserService;
     use Doctrine\ODM\MongoDB\DocumentManager;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,9 +18,9 @@
             private UserService $us,
         ) {}
 
-        #[Route('/user/{id}')]
-        #[Route('/user/{id}/{inventoryType?}', requirements: ['inventoryType' => 'skins|stickers'])]
-        public function user($id, $inventoryType='skins'): Response
+        #[Route('/user/{userID}')]
+        #[Route('/user/{userID}/{inventoryType?}', requirements: ['inventoryType' => 'skins|stickers'])]
+        public function user($userID, $inventoryType='skins'): Response
         {
             if (!empty($_GET)) {
                 $validSorts = $inventoryType === 'skins' ? self::VALID_SKINS_SORTS : self::VALID_STICKERS_SORTS;
@@ -35,41 +32,17 @@
                 }
             }
 
-            $users = $this->dm->getRepository(User::class);
-            $user = $users->findOneBy(['userID' => $id]);
-            $watchers = $this->dm->getRepository(Watcher::class);
-            $watcher = $watchers->findOneBy(['userID' => $id]);
-            if (!$user) {
-                $user = $users->findOneBy(['username' => $id]);
-                $watcher = $watchers->findOneBy(['username' => $id]);
-            }
+            $sort = $_GET["sort"] ?? 'default';
+            $order = $_GET["order"] ?? 'asc';
 
-            $inventory = $user->getInventory();
-            if ($inventoryType === 'stickers') {
-                $inventory = $user->getItemInventory();
-            }
-            if (isset($_GET["sort"])) {
-                $inventory = $this->us->getSortedInventory(
-                    $inventory, $_GET["sort"], $_GET["order"] ?? 'asc'
-                );
-            } else if (isset($_GET["order"]) && $_GET["order"] === 'desc') {
-                $inventory = array_reverse($inventory);
-            }
-
-            // $missions = $dm->getRepository(Mission::class);
-            // $missions = $missions->findAll();
-
-            // $quests = $watcher->getOperationQuests();
-
-            // dd($quests, $missions);
+            $user = $this->us->getFormattedUser($userID, $inventoryType, $sort, $order);
 
             return $this->render('user.html.twig', [
-                'id' => $id,
-                'inventory' => $inventory,
                 'inventoryType' => $inventoryType,
-                'order' => $_GET["order"] ?? 'default',
-                'sort' => $_GET["sort"] ?? 'default',
+                'order' => $order,
+                'sort' => $sort,
                 'user' => $user,
+                'userID' => $userID,
             ]);
         }
     }

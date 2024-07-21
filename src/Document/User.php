@@ -90,4 +90,7 @@
         public function getUsername(): string { return $this->username; }
         public function getUserID(): string { return $this->userID; }
         public function getWallet(): float { return $this->wallet; }
+
+        public function setInventory(array $inventory): void { $this->inventory = $inventory; }
+        public function setItemInventory(array $itemInventory): void { $this->itemInventory = $itemInventory; }
     }

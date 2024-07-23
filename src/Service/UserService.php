@@ -17,13 +17,25 @@
             $users = $this->dm->getRepository(User::class);
             $watchers = $this->dm->getRepository(Watcher::class);
 
+            // Finding user by userID or username
             $user = $users->findOneBy(['userID' => $userID]);
-            $watcher = $watchers->findOneBy(['userID' => $userID]);
+            $watcher = null;
             if (!$user) {
                 $user = $users->findOneBy(['username' => $userID]);
-                $watcher = $watchers->findOneBy(['username' => $userID]);
+                if (!$user) {
+                    // Username can be different in Watcher so we might find it there
+                    $watcher = $watchers->findOneBy(['username' => $userID]);
+                    if (!$watcher) {
+                        throw new \Exception('User not found');
+                    }
+                    $user = $users->findOneBy(['userID' => $watcher->getUserID()]);
+                }
+            }
+            if (!$watcher) {
+                $watcher = $watchers->findOneBy(['userID' => $user->getUserID()]);
             }
 
+            // Figuring user inventory type to sort
             $inventory = $user->getInventory();
             if ($inventoryType === 'stickers') {
                 $inventory = $user->getItemInventory();

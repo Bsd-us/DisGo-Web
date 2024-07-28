@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let url = window.location.href;
     let path = url.split('/');
     let lastField = path[path.length - 1];
-    let navLis = document.querySelectorAll('#inventory nav li');
+    let navLis = document.querySelectorAll('#user nav li');
     navLis.forEach(function(li) {
         // If no target inventory was specified (one / split shorter), skins is default
         if ((path.length === 5 && li.textContent === "Skins") ||

@@ -12,15 +12,11 @@
 <body>
     <header>
         <div>
-            <img src="{{ asset('images/logo.png') }}" />
+            <a href="/"><img src="{{ asset('images/logo.png') }}" /></a>
             <ul>
-                <li class="active">Home</li>
-                <li>Features</li>
-                <li>Commands</li>
-                <li>Team</li>
-                <li>Stats</li>
-                <li>Video Demo</li>
-                <li>Testimonials</li>
+                <li {% if page_file == 'home' %}class="active"{% endif %}><a href="/">Home</a></li>
+                <li {% if page_file == 'leaderboard' %}class="active"{% endif %}><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/login">Login</a></li>
             </ul>
         </div>
     </header>

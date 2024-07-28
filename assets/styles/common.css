@@ -15,7 +15,13 @@
     --rarity-blue: #414e9c;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
+    display: flex;
+    flex-direction: column;
     font-family: sans-serif;
 }
 
@@ -29,7 +35,6 @@ header {
     height: 4em;
     top: 0;
     background-color: var(--darker-blue);
-    color: white;
     font-family: sans-serif;
 }
 
@@ -47,15 +52,46 @@ header ul {
     align-items: center;
     justify-content: space-between;
     flex-grow: 1;
+    height: 100%;
 }
 
 header li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
     font-weight: bold;
     font-size: 0.75em;
     text-transform: uppercase;
 }
 
+header li a {
+    text-decoration: none;
+    color: var(--white-shade);
+}
+
+header li::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    width: 0;
+    background-color: var(--white-shade);
+}
+
+header li:hover::after {
+    height: 2px;
+    width: 100%;
+}
+
+header .active::after {
+    height: 2px;
+    width: 100%;
+}
+
 main {
+    flex-grow: 1;
     padding: 1em 2em;
 }
 
@@ -65,7 +101,7 @@ footer {
     justify-content: center;
     padding: 2em;
     background-color: var(--darker-blue);
-    color: var(--white-shade);
+    color: var(--grey-shade);
     font-size: 0.75em;
 }
 

@@ -12,18 +12,24 @@
         #[Route('/login')]
         public function discordLogin(Request $request): Response
         {
-            $baseUrl = $request->getSchemeAndHttpHost();
-            $route = $request->getPathInfo();
-            $currentUrl = $baseUrl . $route;
-
-            if (!isset($_GET["code"])) {
-                $authUrl = $this->buildAuthUrl($currentUrl);
-                return $this->redirect($authUrl);
-            } else {
-                $content = $this->exchangeAuthCode($currentUrl, $_GET["code"]);
-                $userInfo = $this->getUserInfo($content["access_token"]);
-                $userID = $userInfo["id"];
+            $userID = $request->getSession()->get('loginUserID');
+            if ($userID) {
                 return $this->redirect('/user/' . $userID);
+            } else {
+                $baseUrl = $request->getSchemeAndHttpHost();
+                $route = $request->getPathInfo();
+                $currentUrl = $baseUrl . $route;
+
+                if (!isset($_GET["code"])) {
+                    $authUrl = $this->buildAuthUrl($currentUrl);
+                    return $this->redirect($authUrl);
+                } else {
+                    $content = $this->exchangeAuthCode($currentUrl, $_GET["code"]);
+                    $userInfo = $this->getUserInfo($content["access_token"]);
+                    $userID = $userInfo["id"];
+                    $request->getSession()->set('loginUserID', $userID);
+                    return $this->redirect('/user/' . $userID);
+                }
             }
         }
 

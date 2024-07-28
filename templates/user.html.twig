@@ -73,36 +73,36 @@
                     </tr>
             #}
         </aside>
+        <nav>
+            <ul>
+                <li><a href="/user/{{ userID|url_encode }}/skins">Skins</a></li>
+                <li><a href="/user/{{ userID|url_encode }}/stickers">Stickers</a></li>
+                <li>
+                    <button onclick="">Filter by</button>
+                    <select name="sort" onchange="updateFilter('sort', this.value);">
+                        <option value="default" {% if sort == 'default' %}selected{% endif %}>default</option>
+                        <option value="price" {% if sort == 'price' %}selected{% endif %}>price</option>
+                        <option value="rarity" {% if sort == 'rarity' %}selected{% endif %}>rarity</option>
+                        {% if inventoryType == 'skins' %}
+                            <option value="float" {% if sort == 'float' %}selected{% endif %}>float</option>
+                        {% endif %}
+                    </select>
+                </li>
+                <li>
+                    <button onclick="">Order by</button>
+                    <select name="sort" onchange="updateFilter('order', this.value);">
+                        <option value="asc" {% if order == 'asc' %}selected{% endif %}>ascending</option>
+                        <option value="desc" {% if order == 'desc' %}selected{% endif %}>descending</option>
+                    </select>
+                </li>
+            </ul>
+            {% if inventoryType == 'skins' %}
+                <p>${{ user.inventoryValue|number_format(2, '.', ',') }} - {{ user.inventory|length }}/{{ user.inventorySize }} items</p>
+            {% else %}
+                <p>$ - {{ user.itemInventory|length }}/25 items</p>
+            {% endif %}
+        </nav>
         <div id="inventory">
-            <nav>
-                <ul>
-                    <li><a href="/user/{{ userID }}/skins">Skins</a></li>
-                    <li><a href="/user/{{ userID }}/stickers">Stickers</a></li>
-                    <li>
-                        <button onclick="">Filter by</button>
-                        <select name="sort" onchange="updateFilter('sort', this.value);">
-                            <option value="default" {% if sort == 'default' %}selected{% endif %}>default</option>
-                            <option value="price" {% if sort == 'price' %}selected{% endif %}>price</option>
-                            <option value="rarity" {% if sort == 'rarity' %}selected{% endif %}>rarity</option>
-                            {% if inventoryType == 'skins' %}
-                                <option value="float" {% if sort == 'float' %}selected{% endif %}>float</option>
-                            {% endif %}
-                        </select>
-                    </li>
-                    <li>
-                        <button onclick="">Order by</button>
-                        <select name="sort" onchange="updateFilter('order', this.value);">
-                            <option value="asc" {% if order == 'asc' %}selected{% endif %}>ascending</option>
-                            <option value="desc" {% if order == 'desc' %}selected{% endif %}>descending</option>
-                        </select>
-                    </li>
-                </ul>
-                {% if inventoryType == 'skins' %}
-                    <p>${{ user.inventoryValue|number_format(2, '.', ',') }} - {{ user.inventory|length }}/{{ user.inventorySize }} items</p>
-                {% else %}
-                    <p>$ - {{ user.itemInventory|length }}/25 items</p>
-                {% endif %}
-            </nav>
             <ul>
                 {% set targetInventory = inventoryType == 'skins' ? user.inventory : user.itemInventory %}
                 {% for item in targetInventory %}

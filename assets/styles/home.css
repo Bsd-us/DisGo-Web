@@ -1,0 +1,36 @@
+header, footer {
+    background-color: transparent;
+}
+
+body {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("../images/pattern.png") repeat,
+        url("../images/home.png") no-repeat center center/cover
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--white-shade);
+}
+
+#home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1em;
+    width: 40%;
+    text-align: justify;
+}
+
+#home h1 {
+    font-size: 2em;
+}
+
+#home p {
+    line-height: 1.5em;
+}

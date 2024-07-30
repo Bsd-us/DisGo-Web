@@ -3,6 +3,7 @@
 
     use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
+    #[\AllowDynamicProperties]  # This will need to stay until we re-work the database
     #[MongoDB\Document(collection: 'users')]
     class User
     {

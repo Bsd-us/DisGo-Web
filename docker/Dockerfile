@@ -1,6 +1,4 @@
-FROM shinsenter/symfony:latest
-
-LABEL org.opencontainers.image.source https://github.com/${GITHUB_REPO}
+FROM ghcr.io/bsd-us/symfony:20240730
 
 RUN phpaddmod mongodb \
  && apt update \

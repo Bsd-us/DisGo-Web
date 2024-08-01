@@ -106,29 +106,55 @@
             <ul>
                 {% set targetInventory = inventoryType == 'skins' ? user.inventory : user.itemInventory %}
                 {% for item in targetInventory %}
-                    <li class="rarity{{ item.rarity | capitalize }}">
-                        <div class="retractedDiv rarity{{ item.rarity | capitalize }}">
-                            <figure>
-                                <figcaption>
-                                    {% if inventoryType == 'skins' %}
-                                        <p>Id°{{ loop.index }}</p>
-                                        <p>{{ item.float }}</p>
-                                        <p>{{ item.case }}</p>
-                                        <p>${{ item.price|number_format(2, '.', ',') }}</p>
-                                        <p>{{ item.rarity }}</p>
-                                    {% else %}
-                                        <p>Id°{{ loop.index }}</p>
-                                        <p>{{ item.capsule }}</p>
-                                        <p>${{ item.price|number_format(2, '.', ',') }}</p>
-                                        <p>{{ item.finish }}</p>
-                                    {% endif %}
-                                </figcaption>
-                                <img src="{{ item.link }}" alt="{{ item.name }}">
-                            </figure>
+                    <li class="rarity{{ item.rarity|capitalize }}">
+                        <div class="retractedDiv rarity{{ item.rarity|capitalize }}">
                             <figcaption>
-                                <h3>{{ item.name }}</h3>
-                                <p>{{ item.owner is defined ? item.owner }}</p>
+                                {% if inventoryType == 'skins' %}
+                                    <p>Id°{{ loop.index }}</p>
+                                    <p>{{ item.float }}</p>
+                                    <p>{{ item.case }}</p>
+                                    <p>${{ item.price|number_format(2, '.', ',') }}</p>
+                                    <p>
+                                        {% if item.rarity|lower == 'yellow' %}
+                                            Special
+                                        {% elseif item.rarity|lower == 'red' %}
+                                            Covert
+                                        {% elseif item.rarity|lower == 'pink' %}
+                                            Classified
+                                        {% elseif item.rarity|lower == 'purple' %}
+                                            Restricted
+                                        {% elseif item.rarity|lower == 'blue' %}
+                                            Mil-Spec
+                                        {% else %}
+                                            {{ item.rarity }}
+                                        {% endif %}
+                                    </p>
+                                {% else %}
+                                    <p>Id°{{ loop.index }}</p>
+                                    <p>{{ item.capsule }}</p>
+                                    <p>${{ item.price|number_format(2, '.', ',') }}</p>
+                                    <p>
+                                        {% if item.rarity|lower == 'red' %}
+                                            Extraordinary
+                                        {% elseif item.rarity|lower == 'pink' %}
+                                            Exotic
+                                        {% elseif item.rarity|lower == 'purple' %}
+                                            Remarkable
+                                        {% elseif item.rarity|lower == 'blue' %}
+                                            High Grade
+                                        {% else %}
+                                            {{ item.rarity }}
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
                             </figcaption>
+                            <figure>
+                                <img src="{{ item.link }}" alt="{{ item.name }}">
+                                <figcaption>
+                                    <h3>{{ item.name }}</h3>
+                                    <p>{{ item.owner is defined ? item.owner }}</p>
+                                </figcaption>
+                            </figure>
                         </div>
                     </li>
                 {% endfor %}

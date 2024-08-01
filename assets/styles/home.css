@@ -23,7 +23,7 @@ main {
     justify-content: center;
     align-items: center;
     row-gap: 1em;
-    width: 40%;
+    width: 80%;
     text-align: justify;
 }
 
@@ -33,4 +33,10 @@ main {
 
 #home p {
     line-height: 1.5em;
+}
+
+@media only screen and (min-width: 1024px) {
+    #home {
+        width: 40%;
+    }
 }

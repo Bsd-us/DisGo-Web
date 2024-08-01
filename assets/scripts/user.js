@@ -41,5 +41,20 @@ document.addEventListener('DOMContentLoaded', function() {
             subDiv.classList.remove('extendedDiv');
             subDiv.classList.add('retractedDiv');
         });
+
+        // Detecting if li is at the start of a new row (reversing hover div so it doesn't go off screen)
+        if (li.previousElementSibling &&
+            li.previousElementSibling.getBoundingClientRect().top < li.getBoundingClientRect().top)
+        {
+            li.classList.add('firstOfRow');
+        }
+    });
+    invLis[0].classList.add('firstOfRow');
+
+    // Set figure width to match whatever grid auto-fill li width was chosen
+    let lisWidth = invLis[0].getBoundingClientRect().width + 'px';
+    let invFigures = document.querySelectorAll('#inventory ul figure');
+    invFigures.forEach(function(figure) {
+        figure.style.width = lisWidth;
     });
 });

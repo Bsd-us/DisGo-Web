@@ -17,13 +17,14 @@ main {
     padding: 1em;
     border-radius: 5px;
     background-color: var(--dark-blue);
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 
 .itemList nav {
     display: flex;
     flex-direction: column;
-    row-gap: 0.5em
+    row-gap: 0.5em;
+    font-size: 0.9em;
 }
 
 .itemList nav a {
@@ -86,13 +87,13 @@ main {
 
 .itemListGrid ul {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(6em, 1fr));
     gap: 0.5em;
 }
 
 .itemListGrid li {
     position: relative;
-    height: 5.5em;
+    height: 4em;
     border-radius: 5px;
 }
 
@@ -190,12 +191,35 @@ main {
 
 .itemListGrid img {
     align-self: center;
-    height: 5.5em;
-    width: 7em;
+    height: 4em;
+    width: 5em;
 }
 
 .itemListGrid h3 {
     width: max-content;
+}
+
+@media only screen and (min-width: 600px) {
+    .itemList nav {
+        font-size: 1em;
+    }
+
+    .itemList aside {
+        font-size: 0.8em;
+    }
+
+    .itemListGrid ul {
+        grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+    }
+
+    .itemListGrid li {
+        height: 5.5em;
+    }
+
+    .itemListGrid img {
+        height: 5.5em;
+        width: 7em;
+    }
 }
 
 @media only screen and (min-width: 1024px) {

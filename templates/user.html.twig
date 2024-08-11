@@ -100,8 +100,11 @@
             {% if inventoryType == 'skins' %}
                 <p>${{ user.inventoryValue|number_format(2, '.', ',') }} - {{ user.inventory|length }}/{{ user.inventorySize }} items</p>
             {% else %}
-                {% set totalPrice = user.itemInventory|reduce((carry, item) => carry + item.price, 0) %}
-                <p>${{ totalPrice|number_format(2, '.', ',') }} - {{ user.itemInventory|length }}/25 items</p>
+                {% set sum = 0 %}
+                {% if user.itemInventory is not null %}
+                    {% set sum = user.itemInventory|reduce((carry, item) => carry + item.price, 0) %}
+                {% endif %}
+                <p>${{ sum|number_format(2, '.', ',') }} - {{ user.itemInventory|length }}/25 items</p>
             {% endif %}
         </nav>
         <div class="itemListGrid">
@@ -112,7 +115,7 @@
                         <div class="retractedDiv rarity{{ item.rarity|capitalize }}">
                             <figcaption>
                                 {% if inventoryType == 'skins' %}
-                                    <p>Id°{{ loop.index }}</p>
+                                    <p>Id°{{ item.index }}</p>
                                     <p>{{ item.float|number_format(10, '.', '') }}</p>
                                     <p>{{ item.case }}</p>
                                     <p>${{ item.price|number_format(2, '.', ',') }}</p>

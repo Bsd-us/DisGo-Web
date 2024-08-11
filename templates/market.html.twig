@@ -29,8 +29,11 @@
                     </select>
                 </li>
             </ul>
-            {% set totalPrice = marketItems|reduce((carry, item) => carry + item.sellPrice, 0) %}
-            <p>${{ totalPrice|number_format(2, '.', ',') }} - {{ marketItems|length }} items</p>
+            {% set sum = 0 %}
+            {% if marketItems is not null %}
+                {% set sum = marketItems|reduce((carry, item) => carry + item.sellPrice, 0) %}
+            {% endif %}
+            <p>${{ sum|number_format(2, '.', ',') }} - {{ marketItems|length }} items</p>
         </nav>
         <div class="itemListGrid">
             <ul>
@@ -38,7 +41,7 @@
                     <li class="rarity{{ marketItem.item.rarity|capitalize }}">
                         <div class="retractedDiv rarity{{ marketItem.item.rarity|capitalize }}">
                             <figcaption>
-                                <p>Id°{{ loop.index }}</p>
+                                <p>Id° {{ marketItem.id }}</p>
                                 <p>{{ marketItem.item.float|number_format(10, '.', '') }}</p>
                                 <p>{{ marketItem.item.case }}</p>
                                 <p>${{ marketItem.sellPrice|number_format(2, '.', ',') }}</p>

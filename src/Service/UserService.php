@@ -22,6 +22,12 @@
             } else {
                 $inventory = $user->getItemInventory();
             }
+
+            // Adding initial index to be able to locate items in discord inventory after they were sorted
+            foreach ($inventory as $key => &$item) {
+                $item['index'] = $key + 1;
+            }
+
             if ($inventory) {
                 if ($inventorySort !== 'default') {
                     $inventory = $this->sortInventory(

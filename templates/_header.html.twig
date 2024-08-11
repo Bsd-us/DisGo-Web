@@ -6,16 +6,19 @@
     <title>{{ title }} - DisGo</title>
     <link rel="stylesheet" href="{{ asset('styles/reset.css')}}">
     <link rel="stylesheet" href="{{ asset('styles/common.css')}}">
-    <link rel="stylesheet" href="{{ asset('styles/' ~ page_file ~ '.css') }}">
-    <script src="{{ asset('scripts/'  ~ page_file ~ '.js') }}"></script>
+    {% for page_file in page_files %}
+        <link rel="stylesheet" href="{{ asset('styles/' ~ page_file ~ '.css') }}">
+        <script src="{{ asset('scripts/'  ~ page_file ~ '.js') }}"></script>
+    {% endfor %}
 </head>
 <body>
     <header>
         <div>
             <a href="/"><img src="{{ asset('images/logo.png') }}" /></a>
             <ul>
-                <li {% if page_file == 'home' %}class="active"{% endif %}><a href="/">Home</a></li>
-                <li {% if page_file == 'leaderboard' %}class="active"{% endif %}><a href="/leaderboard">Leaderboard</a></li>
+                <li {% if currentPage == 'home' %}class="active"{% endif %}><a href="/">Home</a></li>
+                <li {% if currentPage == 'leaderboard' %}class="active"{% endif %}><a href="/leaderboard">Leaderboard</a></li>
+                <li {% if currentPage == 'market' %}class="active"{% endif %}><a href="/market">Market</a></li>
                 <li><a href="/login">Login</a></li>
             </ul>
         </div>

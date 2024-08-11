@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
-{% set page_file = 'user' %}
+{% set currentPage = 'user' %}
+{% set page_files = [currentPage, 'itemList'] %}
 {% set title = user.username ~ "'s Profile" %}
 {% block content %}
-    <section id="user">
+    <section id="user" class="itemList">
         <aside>
             <article>
                 <h1><span>{{ user.username }}</span>'s profile</h1>
@@ -79,7 +80,7 @@
                 <li><a href="/user/{{ userID|url_encode }}/stickers">Stickers</a></li>
                 <li>
                     <button onclick="">Filter by</button>
-                    <select name="sort" onchange="updateFilter('sort', this.value);">
+                    <select name="sort" onchange="updateGetParam('sort', this.value);">
                         <option value="default" {% if sort == 'default' %}selected{% endif %}>default</option>
                         <option value="price" {% if sort == 'price' %}selected{% endif %}>price</option>
                         <option value="rarity" {% if sort == 'rarity' %}selected{% endif %}>rarity</option>
@@ -90,7 +91,7 @@
                 </li>
                 <li>
                     <button onclick="">Order by</button>
-                    <select name="sort" onchange="updateFilter('order', this.value);">
+                    <select name="sort" onchange="updateGetParam('order', this.value);">
                         <option value="asc" {% if order == 'asc' %}selected{% endif %}>ascending</option>
                         <option value="desc" {% if order == 'desc' %}selected{% endif %}>descending</option>
                     </select>
@@ -99,10 +100,11 @@
             {% if inventoryType == 'skins' %}
                 <p>${{ user.inventoryValue|number_format(2, '.', ',') }} - {{ user.inventory|length }}/{{ user.inventorySize }} items</p>
             {% else %}
-                <p>$ - {{ user.itemInventory|length }}/25 items</p>
+                {% set totalPrice = user.itemInventory|reduce((carry, item) => carry + item.price, 0) %}
+                <p>${{ totalPrice|number_format(2, '.', ',') }} - {{ user.itemInventory|length }}/25 items</p>
             {% endif %}
         </nav>
-        <div id="inventory">
+        <div class="itemListGrid">
             <ul>
                 {% set targetInventory = inventoryType == 'skins' ? user.inventory : user.itemInventory %}
                 {% for item in targetInventory %}
@@ -111,7 +113,7 @@
                             <figcaption>
                                 {% if inventoryType == 'skins' %}
                                     <p>Id°{{ loop.index }}</p>
-                                    <p>{{ item.float }}</p>
+                                    <p>{{ item.float|number_format(10, '.', '') }}</p>
                                     <p>{{ item.case }}</p>
                                     <p>${{ item.price|number_format(2, '.', ',') }}</p>
                                     <p>

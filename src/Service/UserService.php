@@ -12,7 +12,45 @@
             private DocumentManager $dm,
         ) {}
 
-        public function getFormattedUser($userID, $inventoryType, $inventorySort, $inventoryOrder)
+        public function getFormattedUser($userID, $inventoryType, $inventorySort, $inventoryOrder): User
+        {
+            [$user, $watcher] = $this->findUserByID($userID);
+
+            // Figuring user inventory type to sort
+            if ($inventoryType === 'skins') {
+                $inventory = $user->getInventory();
+            } else {
+                $inventory = $user->getItemInventory();
+            }
+            if ($inventory) {
+                if ($inventorySort !== 'default') {
+                    $inventory = $this->sortInventory(
+                        $inventory, $inventorySort, $inventoryOrder
+                    );
+                } elseif ($inventoryOrder === 'desc') {
+                    $inventory = array_reverse($inventory);
+                }
+
+                // Temporarily sorting user inventory for display purposes
+                if ($inventoryType === 'skins') {
+                    $user->setInventory($inventory);
+                } else {
+                    $user->setItemInventory($inventory);
+                }
+            }
+
+            // Finding and temporarily adding his current missions
+            $missions = $this->dm->getRepository(Mission::class);
+            $missions = $missions->findAll();
+            $quests = $watcher->getOperationQuests();
+            if ($quests) {
+                $user->currentMissions = [$missions[$quests[0]], $missions[$quests[1]]];
+            }
+
+            return $user;
+        }
+
+        private function findUserByID($userID): array
         {
             $users = $this->dm->getRepository(User::class);
             $watchers = $this->dm->getRepository(Watcher::class);
@@ -35,33 +73,7 @@
                 $watcher = $watchers->findOneBy(['userID' => $user->getUserID()]);
             }
 
-            // Figuring user inventory type to sort
-            $inventory = $user->getInventory();
-            if ($inventoryType === 'stickers') {
-                $inventory = $user->getItemInventory();
-            }
-            if ($inventorySort !== 'default') {
-                $inventory = $this->sortInventory(
-                    $inventory, $inventorySort, $inventoryOrder
-                );
-            } elseif ($inventoryOrder === 'desc') {
-                $inventory = array_reverse($inventory);
-            }
-
-            // Finding and temporarily adding his current missions
-            $missions = $this->dm->getRepository(Mission::class);
-            $missions = $missions->findAll();
-            $quests = $watcher->getOperationQuests();
-            $user->currentMissions = [$missions[$quests[0]], $missions[$quests[1]]];
-
-            // Temporarily sorting user inventory for display purposes
-            if ($inventoryType === 'stickers') {
-                $user->setItemInventory($inventory);
-            } else {
-                $user->setInventory($inventory);
-            }
-
-            return $user;
+            return [$user, $watcher];
         }
 
         private function sortInventory($array, $sortBy, $order): array

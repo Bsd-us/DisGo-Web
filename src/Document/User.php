@@ -38,7 +38,7 @@
         protected float $inventoryValue;
 
         #[MongoDB\Field(type: 'collection')]
-        protected array $itemInventory;
+        protected ?array $itemInventory = null;
 
         #[MongoDB\Field(type: 'int')]
         protected ?int $knivesOpened = null;
@@ -81,7 +81,7 @@
         public function getInventory(): array { return $this->inventory; }
         public function getInventorySize(): int { return $this->inventorySize; }
         public function getInventoryValue(): float { return $this->inventoryValue; }
-        public function getItemInventory(): array { return $this->itemInventory; }
+        public function getItemInventory(): ?array { return $this->itemInventory; }
         public function getKnivesOpened(): ?int { return $this->knivesOpened; }
         public function getOperationTokens(): ?int { return $this->operationTokens; }
         public function getOpTickets(): ?int { return $this->opTickets; }

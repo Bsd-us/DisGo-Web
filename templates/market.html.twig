@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% set currentPage = 'market' %}
+{% set page_files = [currentPage, 'itemList'] %}
+{% set title = 'Market' %}
+{% block content %}
+    <section id="market" class="itemList">
+        <aside>
+            <article>
+                <h1>Market</h1>
+                <p>Market History (Incoming)</p>
+            </article>
+        </aside>
+        <nav>
+            <ul>
+                <li>
+                    <button onclick="">Filter by</button>
+                    <select name="sort" onchange="updateGetParam('sort', this.value);">
+                        <option value="default" {% if sort == 'default' %}selected{% endif %}>default</option>
+                        <option value="price" {% if sort == 'price' %}selected{% endif %}>price</option>
+                        <option value="rarity" {% if sort == 'rarity' %}selected{% endif %}>rarity</option>
+                        <option value="float" {% if sort == 'float' %}selected{% endif %}>float</option>
+                    </select>
+                </li>
+                <li>
+                    <button onclick="">Order by</button>
+                    <select name="sort" onchange="updateGetParam('order', this.value);">
+                        <option value="asc" {% if order == 'asc' %}selected{% endif %}>ascending</option>
+                        <option value="desc" {% if order == 'desc' %}selected{% endif %}>descending</option>
+                    </select>
+                </li>
+            </ul>
+            {% set totalPrice = marketItems|reduce((carry, item) => carry + item.sellPrice, 0) %}
+            <p>${{ totalPrice|number_format(2, '.', ',') }} - {{ marketItems|length }} items</p>
+        </nav>
+        <div class="itemListGrid">
+            <ul>
+                {% for marketItem in marketItems %}
+                    <li class="rarity{{ marketItem.item.rarity|capitalize }}">
+                        <div class="retractedDiv rarity{{ marketItem.item.rarity|capitalize }}">
+                            <figcaption>
+                                <p>Id°{{ loop.index }}</p>
+                                <p>{{ marketItem.item.float|number_format(10, '.', '') }}</p>
+                                <p>{{ marketItem.item.case }}</p>
+                                <p>${{ marketItem.sellPrice|number_format(2, '.', ',') }}</p>
+                                <p>
+                                    {% if marketItem.item.rarity|lower == 'yellow' %}
+                                        Special
+                                    {% elseif marketItem.item.rarity|lower == 'red' %}
+                                        Covert
+                                    {% elseif marketItem.item.rarity|lower == 'pink' %}
+                                        Classified
+                                    {% elseif marketItem.item.rarity|lower == 'purple' %}
+                                        Restricted
+                                    {% elseif marketItem.item.rarity|lower == 'blue' %}
+                                        Mil-Spec
+                                    {% else %}
+                                        {{ marketItem.item.rarity }}
+                                    {% endif %}
+                                </p>
+                            </figcaption>
+                            <figure>
+                                <img src="{{ marketItem.item.link }}" alt="{{ marketItem.item.name }}">
+                                <figcaption>
+                                    <h3>{{ marketItem.item.name }}</h3>
+                                    <p>{{ marketItem.item.owner is defined ? marketItem.item.owner }}</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}

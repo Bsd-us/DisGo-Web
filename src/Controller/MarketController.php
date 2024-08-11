@@ -1,29 +1,27 @@
 <?php
     namespace App\Controller;
 
-    use App\Service\UserService;
+    use App\Service\MarketService;
     use Doctrine\ODM\MongoDB\DocumentManager;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\Routing\Annotation\Route;
 
-    class UserController extends AbstractController
+    class MarketController extends AbstractController
     {
-        private const VALID_SKINS_SORTS = [null, 'price', 'float', 'rarity'];
-        private const VALID_STICKERS_SORTS = [null, 'price', 'rarity'];
+        private const VALID_SORTS = [null, 'price', 'float', 'rarity'];
         private const VALID_ORDERS = [null, 'asc', 'desc'];
 
         public function __construct(
             private DocumentManager $dm,
-            private UserService $us,
+            private MarketService $ms,
         ) {}
 
-        #[Route('/user/{userID}/{inventoryType}', requirements: ['inventoryType' => 'skins|stickers'])]
-        public function user($userID, $inventoryType='skins'): Response
+        #[Route('/market')]
+        public function market(): Response
         {
             if (!empty($_GET)) {
-                $validSorts = $inventoryType === 'skins' ? self::VALID_SKINS_SORTS : self::VALID_STICKERS_SORTS;
-                if (isset($_GET["sort"]) && !in_array($_GET["sort"], $validSorts, true)) {
+                if (isset($_GET["sort"]) && !in_array($_GET["sort"], self::VALID_SORTS, true)) {
                     throw new \Exception('Invalid sort');
                 }
                 if (isset($_GET["order"]) && !in_array($_GET["order"], self::VALID_ORDERS, true)) {
@@ -34,14 +32,12 @@
             $sort = $_GET["sort"] ?? 'default';
             $order = $_GET["order"] ?? 'asc';
 
-            $user = $this->us->getFormattedUser($userID, $inventoryType, $sort, $order);
+            $marketItems = $this->ms->getFormattedMarketItems($sort, $order);
 
-            return $this->render('user.html.twig', [
-                'inventoryType' => $inventoryType,
+            return $this->render('market.html.twig', [
+                'marketItems' => $marketItems,
                 'order' => $order,
                 'sort' => $sort,
-                'user' => $user,
-                'userID' => $userID,
             ]);
         }
     }

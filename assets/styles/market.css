@@ -1,0 +1,9 @@
+#market h1 {
+    font-size: 1.5em;
+}
+
+#market article {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+}

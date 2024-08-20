@@ -1,8 +1,8 @@
-#market h1 {
+#market aside h1 {
     font-size: 1.5em;
 }
 
-#market article {
+#market aside article {
     display: flex;
     flex-direction: column;
     row-gap: 1em;

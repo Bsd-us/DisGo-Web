@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% set currentPage = 'open' %}
+{% set page_files = [currentPage] %}
+{% set title = 'Open' %}
+{% block content %}
+    <section id="open">
+        <aside>
+            <article>
+                <h1>Open</h1>
+                <p>Testing Chroma (Incoming)</p>
+            </article>
+        </aside>
+        <nav></nav>
+        <div>
+            <div id="animation">
+                <ul>
+                    {% for item in items %}
+                        <li class="rarity{{ item.rarity|capitalize }}">
+                            <img src="{{ item.picture }}" alt="{{ item.name }}">
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div></div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
